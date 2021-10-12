@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('./icomoon.eot?arc3ze');
+  src:  url('./icomoon.eot?arc3ze#iefix') format('embedded-opentype'),
+    url('./icomoon.ttf?arc3ze') format('truetype'),
+    url('./icomoon.woff?arc3ze') format('woff'),
+    url('./icomoon.svg?arc3ze#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-descargar:before {
+  content: "\e900";
+}
+.icon-incorrecto:before {
+  content: "\e901";
+}
+.icon-subderivacion:before {
+  content: "\e902";
+}
+.icon-anadir:before {
+  content: "\e903";
+}
+.icon-cargar:before {
+  content: "\e904";
+}
+.icon-eliminar:before {
+  content: "\e905";
+}
+.icon-deshacer:before {
+  content: "\e906";
+}
+.icon-borrar:before {
+  content: "\e907";
+}
+.icon-rehacer:before {
+  content: "\e908";
+}
+.icon-correcto:before {
+  content: "\e909";
+}
+.icon-alternar:before {
+  content: "\e90a";
+}
+.icon-mas:before {
+  content: "\e90b";
+}
+.icon-izquierda:before {
+  content: "\e90c";
+}
+.icon-derecha:before {
+  content: "\e90d";
+}
+.icon-arriba:before {
+  content: "\e90e";
+}
+.icon-abajo:before {
+  content: "\e90f";
+}
+.icon-intro:before {
+  content: "\e910";
+}
+.icon-teclado:before {
+  content: "\e911";
+}

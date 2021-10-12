@@ -1,0 +1,165 @@
+body {
+    background: #191b1f;
+    color: #fff;
+}
+
+.fila {
+    color: #fff896;
+}
+
+.mq-editable-field .mq-cursor {
+  border-left: 1px solid white;
+}
+
+.proposicion * {
+    font-size: 1em;
+}
+
+.buttons {
+    background: #1e222b;
+}
+
+button.btn {
+    color: #fff;
+    background: #353844;
+    border-color: #262829;
+    border: none;
+}
+
+button#save {
+    background: #1d3994;
+}
+
+button#open {
+    background: #299049;
+}
+
+footer {
+    background: hsla(222, 18%, 13%, 1);
+}
+
+button.btn:hover {
+    background: #104261;
+}
+
+button.btn:active {
+    background: #18689a;
+}
+
+button#save:hover {
+    background: #1038ca;
+}
+
+button#open:hover {
+    background: #23ad4e;
+}
+
+nav.main {
+    background: hsla(222, 18%, 15%, 1);
+    color: #d2d4da;
+}
+
+div.contenido {
+    background: hsla(220, 11%, 9%, 1);
+    color: #d2d4da;
+}
+
+.instrucciones .contenedor nav ul {
+    background-color: hsl(220, 18%, 13%)!important;
+}
+
+.instrucciones nav ul li.active {
+    background: #141619;
+}
+
+.instrucciones nav ul li {
+    background: hsla(216, 11%, 6%, 1);
+    color: #fff;
+}
+
+.instrucciones nav ul li:not(.active):hover {
+    background: hsla(216, 11%, 8%, 1);
+}
+
+span.key {
+    color: #000;
+    background: linear-gradient(90deg, white, #e4e4e4eb);
+    border: 4px solid #ccc;
+}
+
+footer a {
+    color: #68a5ff;
+}
+
+input#title-box {
+    color: rgba(255, 255, 255, 0.60);
+}
+
+input#title-box:hover, input#title-box:focus {
+    color: rgba(255, 255, 255, 0.83);
+}
+
+.acciones .btn.accion#anadir:hover {
+    background: #184bf5;
+}
+
+.acciones .btn.accion#eliminar:hover {
+    background: #d23434;
+}
+
+.acciones .btn.accion#subderivacion:hover {
+    background: #1b7337;
+}
+
+.acciones .btn.accion {
+    background: #112f92;
+}
+
+.edicion button.btn.accion.edit.disabled:hover {
+    background: #353844;
+}
+
+.keyboard-type {
+    background: #1f232d;
+}
+
+.keyboard button.btn {
+    background: #181a1e;
+}
+
+.keyboard .top-bar {
+    background: #1c2029;
+}
+
+.keyboard {
+    border-color: #181a1e;
+}
+
+.keyboard button#subderivacion {
+    background: #1334a0;
+}
+
+.keyboard button#eliminar {
+    background: #961010;
+}
+
+.keyboard button#anadir {
+    background: #178037;
+}
+
+.keyboard span.close {
+    background: #212631;
+}
+
+.keyboard span.close:hover {
+    background: #181a1e;
+}
+
+button.btn.accion#generate {
+    background: #39f;
+    font-weight: 600;
+}
+
+button.btn.accion#generate:hover {
+    background: #51a7fd;
+}
