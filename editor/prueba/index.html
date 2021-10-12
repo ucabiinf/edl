@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Derivación - EDL 1.0.x</title>
+	<link rel="icon" type="image/png" href="https://abelpz.github.io/edl/favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="https://abelpz.github.io/edl/lib/fonts/icons.css">
+	<link rel="stylesheet" href="https://abelpz.github.io/edl/lib/mathquill/mathquill.css">
+	<link rel="stylesheet" href="https://abelpz.github.io/edl/style.css">
+	<link rel="stylesheet" href="https://abelpz.github.io/edl/style-dark.css">
+</head>
+<body>
+	
+<div class="overlay">
+	<div class="intro-box">
+		<div class="logo">EDL</div>
+		<h1>Editor de derivaciones lógicas</h1>
+		<p class="version"><span>Versión: </span><span class="number"></span></p>
+		<p class="author">Autor: <a target="_blank" href="https://github.com/abelpz/EDL">Abel Pérez</a></p>
+	</div>
+</div>
+<div class="instrucciones">
+	<button class="salir" onclick="cerrarInstrucciones()">x</button>
+	<div class="contenedor">
+		<nav>
+			<ul>
+				<li class="tab active" id="ins" data-tab="#instrucciones"> Instrucciones</li>
+				<li class="tab" id="shortcuts" data-tab="#atajos"> Atajos de teclado</li>
+			</ul>
+		</nav>
+		<div class="contenido active" id="instrucciones">
+			
+	
+			<h3>Instrucciones:</h3>
+			<ul>
+				<li>Escribe usando el teclado en las cajas de texto enfocadas (borde azul)</li>
+				<li>Usa los botones de la parte inferior para ingresar símbolos o usa los atajos alt+1, alt+2, etc.</li>
+				<li>Usa los botones de la parte inferior para realizar acciones como: añadir premisa, abrir subderivación, etc. o usa los atajos.</li>
+				<li>Usa la tecla tab para pasar a la caja de texto de justificación cuando hayas terminado de escribir tu linea.(Las Hipotesis traen la justificación H por defecto pero esta puede ser cambiada de ser necesario)</li>
+				<li>Pulsa enter al terminar la justificación para escribir una nueva linea.</li>
+				<li>Guarda tu progreso o abre una derivación haciendo clic en los botones de la parte inferior derecha; o usa los atajos.</li>
+	
+			</ul>
+		</div>
+		<div class="contenido" id="atajos">
+			
+	
+			<h3>Atajos de teclado:</h3>
+			<div class="lista">
+				<div class="keys"><span class="key">Alt</span>+<span class="key">1 - 9</span></div><p>Añadir simbolo</p>
+			</div>
+			<div class="lista">
+				<div class="keys"><span class="key">↓</span></div><p>Siguiente premisa</p>
+				<div class="keys"><span class="key">↑</span></div><p>Premisa anterior</p>
+				<div class="keys"><span class="key">Enter ↵</span></div><p>Añadir premisa abajo</p>
+				<div class="keys"><span class="key">⇧ Shift</span>+<span class="key">Enter ↵</span></div><p>Añadir premisa arriba</p>
+				<div class="keys"><span class="key">⇧ Shift</span>+<span class="key">Supr</span></div><p>Eliminar linea seleccionada</p>
+			</div>
+			<div class="lista">
+				<div class="keys"><span class="key">Alt</span>+<span class="key">s</span></div><p>Abrir subderivación</p>		
+			</div>
+			<div class="lista">			
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">s</span></div><p>Guardar derivación</p>
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">a</span></div><p>Abrir derivación</p>
+			</div>
+			<div class="lista">
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">z</span></div><p>Deshacer última acción</p>
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">y</span></div><p>Rehacer última acción</p>
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">x</span></div><p>Copiar</p>
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">x</span></div><p>Cortar</p>
+				<div class="keys"><span class="key">Ctrl</span>+<span class="key">v</span></div><p>Pegar</p>
+			</div>
+		</div>
+	</div>
+</div>
+<nav class="main">
+	<div class="nav-left">
+		<div  title="Editor de derivaciones lógicas" class="logo">
+			<span class="siglas">EDL</span>
+		</div>
+	</div>
+	<div class="nav-right">
+		<div class="edicion">
+			<button class="btn accion edit disabled"  title="Deshacer" id="undo" data-shortcut="" data-function="undo">
+				<span class="titulo" ><i class="icon-deshacer"></i></span>
+			</button>
+			<button class="btn accion edit disabled" title="Rehacer" id="redo" data-shortcut="" data-function="redo">
+				<span class="titulo" ><i class="icon-rehacer"></i></span>
+			</button>
+		</div>
+		<div class="options">
+			<a id="claro" class="color" href="#" style="display: none" alt="Cambiar color"><span>Claro</span></a>
+			<a id="oscuro"  class="color" href="#" alt="Cambiar color"><span>Oscuro</span></a>
+			<a id="instructions" class="info" href="#" alt="Lista de instrucciones" onclick="abrirInstrucciones()"><span>Ayuda</span></a>		
+		</div>
+	</div>
+	
+</nav>
+<div class="keyboard">
+	<div class="top-bar"><span class="close">x</span></div>
+
+	<!-- Teclado para telefonos 1 -->
+	<div class="keyboard-type " id="phone-1">
+		<div class="row-1">
+			<button class="btn simbolos" title="Para todo" data-macro="\forall" data-shortcut="1">
+				<span class="shorcut-label">1</span>
+				<span class="macro" >\forall</span>
+			</button>
+			<button class="btn simbolos" title="Existe" data-macro="\exists" data-shortcut="2">
+				<span class="shorcut-label">2</span>
+				<span class="macro" >\exists</span>
+			</button>
+			<button class="btn simbolos" title="Doble implicación" data-macro="\leftrightarrow" data-shortcut="3">
+				<span class="shorcut-label">3</span>
+				<span class="macro" >\leftrightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Implicación" data-macro="\rightarrow" data-shortcut="4">
+				<span class="shorcut-label">4</span>
+				<span class="macro" >\rightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Disyunción" data-macro="\or" data-shortcut="5">
+				<span class="shorcut-label">5</span>
+				<span class="macro" >\or</span>
+			</button>
+			<button class="btn simbolos" title="Conjunción" data-macro="\and" data-shortcut="6">
+				<span class="shorcut-label">6</span>
+				<span class="macro" >\and</span>
+			</button>
+			<button class="btn simbolos" title="Negación" data-macro="\not" data-shortcut="7">
+				<span class="shorcut-label">7</span>
+				<span class="macro" >\not</span>
+			</button>
+			<button class="btn simbolos" title="Abrir paréntesis" data-macro="(" data-shortcut="8">
+				<span class="shorcut-label">8</span>
+				<span class="macro" >(</span>
+			</button>
+			<button class="btn simbolos" title="Cerrar paréntesis" data-macro=")" data-shortcut="9">
+				<span class="shorcut-label">9</span>
+				<span class="macro" >)</span>
+			</button>
+			<button class="btn accion" id="eliminar" title="Eliminar premisa" data-shortcut="" data-function="deleteRow">
+				<span class="titulo" ><i class="icon-eliminar"></i></span>
+			</button>
+		</div>
+		<div class="row-2">
+			<button class="btn simbolos" data-macro="p">
+				<span class="macro" >p</span>
+			</button>
+			<button class="btn simbolos" data-macro="q">
+				<span class="macro" >q</span>
+			</button>
+			<button class="btn simbolos" data-macro="r">
+				<span class="macro" >r</span>
+			</button>
+			<button class="btn simbolos" data-macro="s">
+				<span class="macro" >s</span>
+			</button>
+			<button class="btn simbolos" data-macro="t">
+				<span class="macro" >t</span>
+			</button>
+			<button class="btn simbolos" data-macro="u">
+				<span class="macro" >u</span>
+			</button>
+			<button class="btn simbolos" data-macro="z">
+				<span class="macro" >z</span>
+			</button>
+			<button class="btn simbolos" data-macro="w">
+				<span class="macro" >w</span>
+			</button>
+			<button class="btn simbolos" data-macro="x">
+				<span class="macro" >x</span>
+			</button>
+			<button class="btn simbolos" data-macro="y">
+				<span class="macro" >y</span>
+			</button>
+		</div>
+		<div class="row-3">
+			<button class="btn accion" id="subderivacion" title="Añadir subderivacion" data-shortcut="" data-function="añadirSubderivacion">
+				<span class="titulo" ><i class="icon-subderivacion"></i></span>
+			</button>
+			<button class="btn simbolos" data-macro="a">
+				<span class="macro" >a</span>
+			</button>
+			<button class="btn simbolos" data-macro="b">
+				<span class="macro" >b</span>
+			</button>
+			<button class="btn simbolos" data-macro="c">
+				<span class="macro" >c</span>
+			</button>
+			<button class="btn simbolos" data-macro="d">
+				<span class="macro" >d</span>
+			</button>
+			<button class="btn simbolos" data-macro="e">
+				<span class="macro" >e</span>
+			</button>
+			<button class="btn simbolos" data-macro="f">
+				<span class="macro" >f</span>
+			</button>
+			<button class="btn accion" id="anadir" title="Añadir premisa" data-shortcut="" data-function="añadirPremisa">
+				<span class="titulo" ><i class="icon-anadir"></i></span>
+			</button>
+		</div>
+		<div class="row-4">
+			<button class="btn accion" id="mas" title="Más teclas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-mas"></i></span>
+			</button>
+			<button class="btn accion" id="alternar-mayusculas" title="Alternar mayúsculas y minúsculas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-alternar"></i></span>
+			</button>
+			<button class="btn accion" id="izquierda" title="Moverse a la izquierda" data-shortcut="" data-function="moverIzq">
+				<span class="titulo" ><i class="icon-izquierda"></i></span>
+			</button>
+			<button class="btn accion" id="arriba" title="Moverse hacia arriba" data-shortcut="" data-function="moverAr">
+				<span class="titulo" ><i class="icon-arriba"></i></span>
+			</button>
+			<button class="btn accion" id="abajo" title="Moverse hacia abajo" data-shortcut="" data-function="moverAb">
+				<span class="titulo" ><i class="icon-abajo"></i></span>
+			</button>
+			<button class="btn accion" id="derecha" title="Moverse a la derecha" data-shortcut="" data-function="moverDer">
+				<span class="titulo" ><i class="icon-derecha"></i></span>
+			</button>
+			<button class="btn simbolos" data-macro=",">
+				<span class="macro" >,</span>
+			</button>		
+			<button class="btn accion" id="borrar" title="Borrar" data-shortcut="" data-function="borrar">
+				<span class="titulo" ><i class="icon-borrar"></i></span>
+			</button>
+		</div>
+	</div>
+
+	<!-- Teclado para telefonos 2 -->
+	<div class="keyboard-type " id="phone-2">
+		<div class="row-1">
+			<button class="btn simbolos" title="Para todo" data-macro="\forall" data-shortcut="1">
+				<span class="shorcut-label">1</span>
+				<span class="macro" >\forall</span>
+			</button>
+			<button class="btn simbolos" title="Existe" data-macro="\exists" data-shortcut="2">
+				<span class="shorcut-label">2</span>
+				<span class="macro" >\exists</span>
+			</button>
+			<button class="btn simbolos" title="Doble implicación" data-macro="\leftrightarrow" data-shortcut="3">
+				<span class="shorcut-label">3</span>
+				<span class="macro" >\leftrightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Implicación" data-macro="\rightarrow" data-shortcut="4">
+				<span class="shorcut-label">4</span>
+				<span class="macro" >\rightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Disyunción" data-macro="\or" data-shortcut="5">
+				<span class="shorcut-label">5</span>
+				<span class="macro" >\or</span>
+			</button>
+			<button class="btn simbolos" title="Conjunción" data-macro="\and" data-shortcut="6">
+				<span class="shorcut-label">6</span>
+				<span class="macro" >\and</span>
+			</button>
+			<button class="btn simbolos" title="Negación" data-macro="\not" data-shortcut="7">
+				<span class="shorcut-label">7</span>
+				<span class="macro" >\not</span>
+			</button>
+			<button class="btn simbolos" title="Abrir paréntesis" data-macro="(" data-shortcut="8">
+				<span class="shorcut-label">8</span>
+				<span class="macro" >(</span>
+			</button>
+			<button class="btn simbolos" title="Cerrar paréntesis" data-macro=")" data-shortcut="9">
+				<span class="shorcut-label">9</span>
+				<span class="macro" >)</span>
+			</button>
+			<button class="btn accion" id="eliminar" title="Eliminar premisa" data-shortcut="" data-function="deleteRow">
+				<span class="titulo" ><i class="icon-eliminar"></i></span>
+			</button>
+		</div>
+		<div class="row-2">
+			<button class="btn simbolos" data-macro="p">
+				<span class="macro" >p</span>
+			</button>
+			<button class="btn simbolos" data-macro="q">
+				<span class="macro" >q</span>
+			</button>
+			<button class="btn simbolos" data-macro="r">
+				<span class="macro" >r</span>
+			</button>
+			<button class="btn simbolos" data-macro="s">
+				<span class="macro" >s</span>
+			</button>
+			<button class="btn simbolos" data-macro="t">
+				<span class="macro" >t</span>
+			</button>
+			<button class="btn simbolos" data-macro="u">
+				<span class="macro" >u</span>
+			</button>
+			<button class="btn simbolos" data-macro="z">
+				<span class="macro" >z</span>
+			</button>
+			<button class="btn simbolos" data-macro="w">
+				<span class="macro" >w</span>
+			</button>
+			<button class="btn simbolos" data-macro="x">
+				<span class="macro" >x</span>
+			</button>
+			<button class="btn simbolos" data-macro="y">
+				<span class="macro" >y</span>
+			</button>
+		</div>
+		<div class="row-3">
+			<button class="btn accion" id="subderivacion" title="Añadir subderivacion" data-shortcut="" data-function="añadirSubderivacion">
+				<span class="titulo" ><i class="icon-subderivacion"></i></span>
+			</button>
+			<button class="btn simbolos" data-macro="a">
+				<span class="macro" >a</span>
+			</button>
+			<button class="btn simbolos" data-macro="b">
+				<span class="macro" >b</span>
+			</button>
+			<button class="btn simbolos" data-macro="c">
+				<span class="macro" >c</span>
+			</button>
+			<button class="btn simbolos" data-macro="d">
+				<span class="macro" >d</span>
+			</button>
+			<button class="btn simbolos" data-macro="e">
+				<span class="macro" >e</span>
+			</button>
+			<button class="btn simbolos" data-macro="f">
+				<span class="macro" >f</span>
+			</button>
+			<button class="btn accion" id="anadir" title="Añadir premisa" data-shortcut="" data-function="añadirPremisa">
+				<span class="titulo" ><i class="icon-anadir"></i></span>
+			</button>
+		</div>
+		<div class="row-4">
+			<button class="btn accion" id="mas" title="Más teclas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-mas"></i></span>
+			</button>
+			<button class="btn accion" id="alternar-mayusculas" title="Alternar mayúsculas y minúsculas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-alternar"></i></span>
+			</button>
+			<button class="btn accion" id="izquierda" title="Moverse a la izquierda" data-shortcut="" data-function="moverIzq">
+				<span class="titulo" ><i class="icon-izquierda"></i></span>
+			</button>
+			<button class="btn accion" id="arriba" title="Moverse hacia arriba" data-shortcut="" data-function="moverAr">
+				<span class="titulo" ><i class="icon-arriba"></i></span>
+			</button>
+			<button class="btn accion" id="abajo" title="Moverse hacia abajo" data-shortcut="" data-function="moverAb">
+				<span class="titulo" ><i class="icon-abajo"></i></span>
+			</button>
+			<button class="btn accion" id="derecha" title="Moverse a la derecha" data-shortcut="" data-function="moverDer">
+				<span class="titulo" ><i class="icon-derecha"></i></span>
+			</button>
+			<button class="btn simbolos" data-macro=",">
+				<span class="macro" >,</span>
+			</button>		
+			<button class="btn accion" id="borrar" title="Borrar" data-shortcut="" data-function="borrar">
+				<span class="titulo" ><i class="icon-borrar"></i></span>
+			</button>
+		</div>
+	</div>
+
+	<!-- Teclado para tablets -->
+	<div class="keyboard-type " id="tablet-1">
+		<div class="row-1">
+			<button class="btn simbolos" title="Para todo" data-macro="\forall" data-shortcut="1">
+				<span class="shorcut-label">1</span>
+				<span class="macro" >\forall</span>
+			</button>
+			<button class="btn simbolos" title="Existe" data-macro="\exists" data-shortcut="2">
+				<span class="shorcut-label">2</span>
+				<span class="macro" >\exists</span>
+			</button>
+			<button class="btn simbolos" title="Doble implicación" data-macro="\leftrightarrow" data-shortcut="3">
+				<span class="shorcut-label">3</span>
+				<span class="macro" >\leftrightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Implicación" data-macro="\rightarrow" data-shortcut="4">
+				<span class="shorcut-label">4</span>
+				<span class="macro" >\rightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Disyunción" data-macro="\or" data-shortcut="5">
+				<span class="shorcut-label">5</span>
+				<span class="macro" >\or</span>
+			</button>
+			<button class="btn simbolos" title="Conjunción" data-macro="\and" data-shortcut="6">
+				<span class="shorcut-label">6</span>
+				<span class="macro" >\and</span>
+			</button>
+			<button class="btn simbolos" title="Negación" data-macro="\not" data-shortcut="7">
+				<span class="shorcut-label">7</span>
+				<span class="macro" >\not</span>
+			</button>
+			<button class="btn simbolos" title="Abrir paréntesis" data-macro="(" data-shortcut="8">
+				<span class="shorcut-label">8</span>
+				<span class="macro" >(</span>
+			</button>
+			<button class="btn simbolos" title="Cerrar paréntesis" data-macro=")" data-shortcut="9">
+				<span class="shorcut-label">9</span>
+				<span class="macro" >)</span>
+			</button>
+			
+		</div>
+		<div class="row-2">
+			<button class="btn simbolos" data-macro="p">
+				<span class="macro" >p</span>
+			</button>
+			<button class="btn simbolos" data-macro="q">
+				<span class="macro" >q</span>
+			</button>
+			<button class="btn simbolos" data-macro="r">
+				<span class="macro" >r</span>
+			</button>
+			<button class="btn simbolos" data-macro="s">
+				<span class="macro" >s</span>
+			</button>
+			<button class="btn simbolos" data-macro="t">
+				<span class="macro" >t</span>
+			</button>
+			<button class="btn simbolos" data-macro="u">
+				<span class="macro" >u</span>
+			</button>
+			<button class="btn simbolos" data-macro="z">
+				<span class="macro" >z</span>
+			</button>
+			<button class="btn simbolos" data-macro="w">
+				<span class="macro" >w</span>
+			</button>
+			<button class="btn simbolos" data-macro="x">
+				<span class="macro" >x</span>
+			</button>			
+		</div>
+		<div class="row-3">
+			<button class="btn simbolos" data-macro="y">
+				<span class="macro" >y</span>
+			</button>
+			<button class="btn simbolos" data-macro="a">
+				<span class="macro" >a</span>
+			</button>
+			<button class="btn simbolos" data-macro="b">
+				<span class="macro" >b</span>
+			</button>
+			<button class="btn simbolos" data-macro="c">
+				<span class="macro" >c</span>
+			</button>
+			<button class="btn simbolos" data-macro="d">
+				<span class="macro" >d</span>
+			</button>
+			<button class="btn simbolos" data-macro="e">
+				<span class="macro" >e</span>
+			</button>
+			<button class="btn simbolos" data-macro="f">
+				<span class="macro" >f</span>
+			</button>
+			<button class="btn simbolos" data-macro=",">
+				<span class="macro" >,</span>
+			</button>	
+			<button class="btn accion" id="alternar-mayusculas" title="Alternar mayúsculas y minúsculas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-alternar"></i></span>
+			</button>
+		</div>
+		<div class="row-4">
+			<button class="btn accion" id="mas" title="Más teclas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-mas"></i></span>
+			</button>
+			<button class="btn accion" id="arriba" title="Moverse hacia arriba" data-shortcut="" data-function="moverAr">
+				<span class="titulo" ><i class="icon-abajo"></i></span>
+			</button>
+			<button class="btn accion" id="borrar" title="Borrar" data-shortcut="" data-function="borrar">
+				<span class="titulo" ><i class="icon-borrar"></i></span>
+			</button>
+			<button class="btn accion" id="izquierda" title="Moverse a la izquierda" data-shortcut="" data-function="moverIzq">
+				<span class="titulo" ><i class="icon-izquierda"></i></span>
+			</button>
+			
+			<button class="btn accion" id="abajo" title="Moverse hacia abajo" data-shortcut="" data-function="moverAb">
+				<span class="titulo" ><i class="icon-arriba"></i></span>
+			</button>
+			<button class="btn accion" id="derecha" title="Moverse a la derecha" data-shortcut="" data-function="moverDer">
+				<span class="titulo" ><i class="icon-derecha"></i></span>
+			</button>
+			<button class="btn accion" id="eliminar" title="Eliminar premisa" data-shortcut="" data-function="deleteRow">
+				<span class="titulo" ><i class="icon-eliminar"></i></span>
+			</button>
+			
+			<button class="btn accion" id="anadir" title="Añadir premisa" data-shortcut="" data-function="añadirPremisa">
+				<span class="titulo" ><i class="icon-anadir"></i></span>
+			</button>
+			<button class="btn accion" id="subderivacion" title="Añadir subderivacion" data-shortcut="" data-function="añadirSubderivacion">
+				<span class="titulo" ><i class="icon-subderivacion"></i></span>
+			</button>
+			
+			
+		</div>
+	</div>
+	<!-- Teclado para tablets 2-->
+	<div class="keyboard-type " id="tablet-1">
+		<div class="row-1">
+			<button class="btn simbolos" title="Para todo" data-macro="\forall" data-shortcut="1">
+				<span class="shorcut-label">1</span>
+				<span class="macro" >\forall</span>
+			</button>
+			<button class="btn simbolos" title="Existe" data-macro="\exists" data-shortcut="2">
+				<span class="shorcut-label">2</span>
+				<span class="macro" >\exists</span>
+			</button>
+			<button class="btn simbolos" title="Doble implicación" data-macro="\leftrightarrow" data-shortcut="3">
+				<span class="shorcut-label">3</span>
+				<span class="macro" >\leftrightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Implicación" data-macro="\rightarrow" data-shortcut="4">
+				<span class="shorcut-label">4</span>
+				<span class="macro" >\rightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Disyunción" data-macro="\or" data-shortcut="5">
+				<span class="shorcut-label">5</span>
+				<span class="macro" >\or</span>
+			</button>
+			<button class="btn simbolos" title="Conjunción" data-macro="\and" data-shortcut="6">
+				<span class="shorcut-label">6</span>
+				<span class="macro" >\and</span>
+			</button>
+			<button class="btn simbolos" title="Negación" data-macro="\not" data-shortcut="7">
+				<span class="shorcut-label">7</span>
+				<span class="macro" >\not</span>
+			</button>
+			<button class="btn simbolos" title="Abrir paréntesis" data-macro="(" data-shortcut="8">
+				<span class="shorcut-label">8</span>
+				<span class="macro" >(</span>
+			</button>
+			<button class="btn simbolos" title="Cerrar paréntesis" data-macro=")" data-shortcut="9">
+				<span class="shorcut-label">9</span>
+				<span class="macro" >)</span>
+			</button>
+			
+		</div>
+		<div class="row-2">
+			<button class="btn simbolos" data-macro="p">
+				<span class="macro" >p</span>
+			</button>
+			<button class="btn simbolos" data-macro="q">
+				<span class="macro" >q</span>
+			</button>
+			<button class="btn simbolos" data-macro="r">
+				<span class="macro" >r</span>
+			</button>
+			<button class="btn simbolos" data-macro="s">
+				<span class="macro" >s</span>
+			</button>
+			<button class="btn simbolos" data-macro="t">
+				<span class="macro" >t</span>
+			</button>
+			<button class="btn simbolos" data-macro="u">
+				<span class="macro" >u</span>
+			</button>
+			<button class="btn simbolos" data-macro="z">
+				<span class="macro" >z</span>
+			</button>
+			<button class="btn simbolos" data-macro="w">
+				<span class="macro" >w</span>
+			</button>
+			<button class="btn simbolos" data-macro="x">
+				<span class="macro" >x</span>
+			</button>			
+		</div>
+		<div class="row-3">
+			<button class="btn simbolos" data-macro="y">
+				<span class="macro" >y</span>
+			</button>
+			<button class="btn simbolos" data-macro="a">
+				<span class="macro" >a</span>
+			</button>
+			<button class="btn simbolos" data-macro="b">
+				<span class="macro" >b</span>
+			</button>
+			<button class="btn simbolos" data-macro="c">
+				<span class="macro" >c</span>
+			</button>
+			<button class="btn simbolos" data-macro="d">
+				<span class="macro" >d</span>
+			</button>
+			<button class="btn simbolos" data-macro="e">
+				<span class="macro" >e</span>
+			</button>
+			<button class="btn simbolos" data-macro="f">
+				<span class="macro" >f</span>
+			</button>
+			<button class="btn simbolos" data-macro=",">
+				<span class="macro" >,</span>
+			</button>	
+			<button class="btn accion" id="alternar-mayusculas" title="Alternar mayúsculas y minúsculas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-alternar"></i></span>
+			</button>
+		</div>
+		<div class="row-4">
+			<button class="btn accion" id="mas" title="Más teclas" data-shortcut="" data-function="">
+				<span class="titulo" ><i class="icon-mas"></i></span>
+			</button>
+			<button class="btn accion" id="arriba" title="Moverse hacia arriba" data-shortcut="" data-function="moverAr">
+				<span class="titulo" ><i class="icon-abajo"></i></span>
+			</button>
+			<button class="btn accion" id="borrar" title="Borrar" data-shortcut="" data-function="borrar">
+				<span class="titulo" ><i class="icon-borrar"></i></span>
+			</button>
+			<button class="btn accion" id="izquierda" title="Moverse a la izquierda" data-shortcut="" data-function="moverIzq">
+				<span class="titulo" ><i class="icon-izquierda"></i></span>
+			</button>
+			
+			<button class="btn accion" id="abajo" title="Moverse hacia abajo" data-shortcut="" data-function="moverAb">
+				<span class="titulo" ><i class="icon-arriba"></i></span>
+			</button>
+			<button class="btn accion" id="derecha" title="Moverse a la derecha" data-shortcut="" data-function="moverDer">
+				<span class="titulo" ><i class="icon-derecha"></i></span>
+			</button>
+			<button class="btn accion" id="eliminar" title="Eliminar premisa" data-shortcut="" data-function="deleteRow">
+				<span class="titulo" ><i class="icon-eliminar"></i></span>
+			</button>
+			
+			<button class="btn accion" id="anadir" title="Añadir premisa" data-shortcut="" data-function="añadirPremisa">
+				<span class="titulo" ><i class="icon-anadir"></i></span>
+			</button>
+			<button class="btn accion" id="subderivacion" title="Añadir subderivacion" data-shortcut="" data-function="añadirSubderivacion">
+				<span class="titulo" ><i class="icon-subderivacion"></i></span>
+			</button>
+		</div>
+	</div>
+</div>
+<section class="pantalla">
+	<div class="contenedor">
+		<div class="desarrollo">
+			<div class="derivacion cerrada">
+				<div class="hipotesis iniciales">
+					<div class="premisa">
+						<div class="fila">
+							<span class="fila-label">1</span>
+						</div>
+						<span  class="proposicion" data-fila="1"></span>
+						<span class="justificacion">H</span>
+					</div>
+				</div>
+				<div class="premisa">
+					<div class="fila">
+						<span class="fila-label">2</span>
+					</div>
+					<span  class="proposicion" data-fila="2"></span>
+					<span class="justificacion"></span>
+				</div>
+			</div>
+			<div class="caja-conclusion">
+				<span class="conclusion">\therefore </span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="buttons">
+		<div class="atajos">
+			<button class="btn simbolos" title="Para todo" data-macro="\forall" data-shortcut="1">
+				<span class="shorcut-label">1</span>
+				<span class="macro" >\forall</span>
+			</button>
+			<button class="btn simbolos" title="Existe" data-macro="\exists" data-shortcut="2">
+				<span class="shorcut-label">2</span>
+				<span class="macro" >\exists</span>
+			</button>
+			<button class="btn simbolos" title="Doble implicación" data-macro="\leftrightarrow" data-shortcut="3">
+				<span class="shorcut-label">3</span>
+				<span class="macro" >\leftrightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Implicación" data-macro="\rightarrow" data-shortcut="4">
+				<span class="shorcut-label">4</span>
+				<span class="macro" >\rightarrow</span>
+			</button>
+			<button class="btn simbolos" title="Disyunción" data-macro="\or" data-shortcut="5">
+				<span class="shorcut-label">5</span>
+				<span class="macro" >\or</span>
+			</button>
+			<button class="btn simbolos" title="Conjunción" data-macro="\and" data-shortcut="6">
+				<span class="shorcut-label">6</span>
+				<span class="macro" >\and</span>
+			</button>
+			<button class="btn simbolos" title="Negación" data-macro="\not" data-shortcut="7">
+				<span class="shorcut-label">7</span>
+				<span class="macro" >\not</span>
+			</button>
+			<button class="btn simbolos" title="Abrir paréntesis" data-macro="(" data-shortcut="8">
+				<span class="shorcut-label">8</span>
+				<span class="macro" >(</span>
+			</button>
+			<button class="btn simbolos" title="Cerrar paréntesis" data-macro=")" data-shortcut="9">
+				<span class="shorcut-label">9</span>
+				<span class="macro" >)</span>
+			</button>
+		</div>
+		<div class="acciones">
+			<button class="btn accion" id="anadir" title="Añadir premisa" data-shortcut="" data-function="añadirPremisa">
+				<span class="titulo" ><i class="icon-anadir"></i></span>
+			</button>
+
+			<button class="btn accion" id="eliminar" title="Eliminar premisa" data-shortcut="" data-function="deleteRow">
+				<span class="titulo" ><i class="icon-eliminar"></i></span>
+			</button>
+			
+			<button class="btn accion" id="subderivacion" title="Abrir subderivación" data-shortcut="s" data-function="añadirSubderivacion">
+				<span class="titulo" ><i class="icon-subderivacion"></i></span>
+			</button>
+
+			<button class="btn accion" id="teclado" title="Abrir teclado" data-shortcut="k" data-function="abrirTeclado">
+				<span class="titulo" ><i class="icon-teclado"></i></span>
+			</button>
+		</div>
+	</div>
+</section>
+<footer><span>*Atajos con alt + tecla</span><span style="float:right;"> Creado por <a target="_blank" href="https://github.com/abelpz/EDL">Abel Pérez</a></span></footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<script src="https://abelpz.github.io/edl/lib/mathquill/mathquill.js"></script>
+<script src="https://abelpz.github.io/edl/lib/testing/testing.js"></script>
+
+<script>
+var MQ = MathQuill.getInterface(2);
+</script>
+
+<script src="https://abelpz.github.io/edl/prueba/main.js"></script>
+
+<script>
+
+	//Principal
+	var question = window.frameElement.parentElement.previousElementSibling;
+	testOut("Probando question", question);
+	testOut("Probando hipotesis iniciales", question.querySelector(".hipotesis.iniciales"));
+	
+	let answer = question.querySelector(".hipotesis.iniciales").nextElementSibling;
+		if (!answer.querySelector(".proposicion")){
+			answer.innerHTML = answer.innerHTML + '<span class="proposicion" data-fila="'+ answer.querySelector(".fila-label").innerHTML +'"> </span><span class="justificacion"> </span>';
+		}
+
+	var questionInput = question.parentElement.nextElementSibling.querySelector(".question_input");
+	var questionID = 0;
+
+	function getQuestion(){
+		contenedor.firstChild.remove();
+		if(!questionInput || questionInput.value == ""){
+			contenedor.innerHTML = question.innerHTML;
+		}else{
+			contenedor.innerHTML = questionInput.value;
+		} 
+		premisasIniciales = (document.querySelectorAll('.hipotesis')[0].nextElementSibling) ? true : false;
+		questionID = contenedor.firstElementChild.getAttribute("data-id");
+		changeTitle(questionID, appVersion);
+		contenedor.querySelectorAll('.proposicion').forEach( (item,i)=>{
+			item.setAttribute('data-fila', (i+1));
+		});
+        setFields(true);
+        setJustificaciones(true);
+		setConclusion();
+		batchAddDelete(1, true);
+        saveToMemory();
+	}
+
+	function initEDL(){
+		if(questionInput) questionInput.style.display = "none";
+		changeTitle(fileName, appVersion);
+		setTimeout(() => {
+		introScreen.classList.add("fade-out");
+			setTimeout(() => {
+				introScreen.style.display = "none";
+				botonera.classList.add("active");
+			}, 500);
+			
+		}, 2000);
+
+		if(question) getQuestion();
+		setButtons();
+	}initEDL();
+</script>
+</body>
+</html>
