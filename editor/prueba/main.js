@@ -159,7 +159,7 @@ function saveToMemory() {
                 console.log(cursor + ' de ' + parseInt(parseInt(memory.length - 1)));
             }
             canSave = true;
-        }, 550);
+        }, 250);
     }
 
     function saveAnswer(curr) {
