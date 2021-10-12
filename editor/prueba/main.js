@@ -159,13 +159,13 @@ function saveToMemory() {
                 console.log(cursor + ' de ' + parseInt(parseInt(memory.length - 1)));
             }
             canSave = true;
-        }, 300);
+        }, 550);
     }
 
     function saveAnswer(curr) {
         var saved = saveToIframe(curr);
 
-        if (saved && questionInput) {
+        if (!saved && questionInput) {
             console.log('guardando en textarea...');
             questionInput.innerText = encodeURIComponent(curr);
         } else {
