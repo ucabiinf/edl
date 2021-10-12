@@ -165,7 +165,7 @@ function saveToMemory() {
     function saveAnswer(curr) {
         var saved = saveToIframe(curr);
 
-        if (!saved && questionInput) {
+        if (saved && questionInput) {
             console.log('guardando en textarea...');
             questionInput.innerText = encodeURIComponent(curr);
         } else {
